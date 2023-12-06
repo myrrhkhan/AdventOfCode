@@ -1,0 +1,39 @@
+conditions:
+- 12 red, 13 green, 14 blue
+
+;; Purpose: solve problem
+;; input: string, path to input
+(main "/path/to/input)":
+- return (readfile->sum "/path/to/input")
+
+;; Purpose: take path to input, read file into listof string, return sum
+;; string -> int
+(readfile->sum path_to_input) -> int:
+- read file into lines with (file->lines), put list into (lines->sum)
+
+;; Purpose: take listof string (file lines) and return sum
+;; listof string, int (running total cause we're using tail recursion) -> int (sum)
+(lines->sum lines (running_total default val 0)):
+- if lines list is empty return running sum
+- take (first lines), save as line variable
+- take line, split by ":" and remove first element ("Game x")
+- split line by semicolon into sets
+- (sets->boolean sets), should return true/false
+- if true, running_total++, else running_total stays the same
+- return (lines->sum (rest lines) running_total)
+
+;; Purpose: take info from game, check if game is possible
+;; listof string->boolean
+sets->boolean
+- if sets empty return true (means everything before was true)
+- split by ("; ")
+- check if (numandcolor->boolean (first set)) is true, if not return false
+- return (sets->boolean (rest set))
+
+;; Purpose: check if individual round within game is possible by checking with color limits
+;; listof string -> boolean
+(numandcolor->boolean string):
+- split set via ", " save as set
+- convert first in set into int (number)
+- convert second in set (either "red" "green" or "blue") to see if number is compliant, if not return false
+- if true, return (numandcolor (rest (rest set))) (remove first two items in set list)

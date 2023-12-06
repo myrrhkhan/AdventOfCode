@@ -1,0 +1,43 @@
+;; Purpose: main function
+;; filename (string) -> solution (int)
+(main filename):
+- (file->lines path)
+
+;; Purpose: read lines (listof string), return solution
+;; lines (listof string), running_total (int, default val of 1) -> solution (int)
+(lines->solution lines (running_total 1)):
+- Take first line, remove "Game [num]: " from beginning
+    - (define line (second (string-split (first lines) ": "))) ;; first line, split by ": ", remove 1st element
+- linepower = (line->linepower line)
+- (lines->solution (rest lines) (* running_total linepower))
+
+;; Purpose: parse individual line
+;; line (string, format "3 blue; 4 blue, 1 red") -> linepower (int)
+(line->linepower line):
+- set values: maxred = 0, maxblue = 0, maxgreen = 0
+- replace semicolons with "," with (string-replace)
+- (define numscolors (split-string ", "))
+- (define maxes (numscolors->maxes numscolors))
+- (* (first maxes) (second maxes) (third maxes))
+
+;; Purpose: find max values from each line
+;; numcolors (listof string, format "3 blue" "4 blue"), 
+;; current_maxes (listof int, default (0 0 0)) -> max_redbluegreen (listof int)
+(numscolors->maxes numscolors, current_maxes):
+- (define numcolor (string-split (first numscolors) " "))
+- (line->max_redbluegreen (rest numscolors) (updatemaxes current_maxes))
+
+;; Take num color pair (ex: ("3" "red")) and a list of maxes and update the list
+;; numcolor (string), maxes -> updated_maxes
+(updatemaxes numcolor maxes):
+- (define maxred (first maxes))
+- (define maxblue (second maxes))
+- (define maxgreen (last maxes))
+- (define num (string->number (first numcolor)))
+- if second == "red", (set! maxred (max num maxred))
+- if second == "blue", (set! maxblue (max num maxblue))
+- if third == "green", (set! maxgreen (max num maxgreen))
+- (list maxred maxblue maxgreen)
+
+(main "input")
+
