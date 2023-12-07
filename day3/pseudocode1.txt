@@ -1,0 +1,10 @@
+main:
+Read from file into listof strings (lines)
+Read lines and get sum
+
+lines, running_total = 0, symbolhash_top = empty, numstocheck_top = empty -> sum:
+- idx counter, numsearch, symbolsearch
+- iterate through characters
+- if number, keep save begin idx, keep going until number ends, end idx, search for symbol
+- if symbol, add symbol to symbolhash_curr, search for number, if next character period, reset
+- if symbol after number
