@@ -2,9 +2,18 @@ main:
 Read from file into listof strings (lines)
 Read lines and get sum
 
-lines, running_total = 0, symbolhash_top = empty, numstocheck_top = empty -> sum:
-- idx counter, numsearch, symbolsearch
+(findsum):
+args: lines, running_total = 0, symbolhash_top = empty, numstocheck_top = empty -> sum:
+- idx: current index
+- sum: sum of numbers
+- numsearch: boolean, whether or not we're searching for a number after we found a symbol
+- symbolsearch: whether or not we're searching for a symbol after we found a number
+- symbolhash_curr: hash of indeces on current row for finding numbers on next row
+- numstocheck_curr: numbers we found with no symbol. tentatively not counted, but if next row has symbols near, then count
 - iterate through characters
-- if number, keep save begin idx, keep going until number ends, end idx, search for symbol
-- if symbol, add symbol to symbolhash_curr, search for number, if next character period, reset
-- if symbol after number
+- if character is a number, keep iterating until a number isn't found.
+    - if numsearch is true, then add the number to the sum 
+    - if next character is symbol, add number to sum. else, put all all numbers in idx range into numstocheck_curr, 
+- if character is symbol, add symbol to symbolhash_curr, search for number, if next character period, reset
+- once done iterating, iterate through numstocheck_curr, find symbolhash_top from begin - 1 to end + 1
+- call (findsum (rest lines) running_total symbolhash_curr numstocheck_curr)
